@@ -1,0 +1,118 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=epargne_db
+      - POSTGRES_USER=epargne_user
+      - POSTGRES_PASSWORD=epargne123456
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U epargne_user -d epargne_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  backend:
+    build: 
+      context: .
+      dockerfile: backend/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - ./backend/staticfiles:/app/backend/staticfiles
+      - ./backend/media:/app/backend/media
+    environment:
+      - DB_NAME=epargne_db
+      - DB_USER=epargne_user
+      - DB_PASSWORD=epargne123456
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DJANGO_SETTINGS_MODULE=backend.settings
+    networks:
+      - app-network
+    ports:
+      - "8000:8000"
+
+  redis:
+    image: redis:alpine
+    networks:
+      - app-network
+
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: react-frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    working_dir: /app
+    command: >
+      sh -c "
+        echo '=== Frontend Build Process ===' &&
+        if [ ! -d node_modules ]; then
+          echo 'Installing dependencies...' &&
+          npm install
+        fi &&
+        echo 'Building React app...' &&
+        npm run build &&
+        echo 'Build completed successfully!' &&
+        ls -la build/ &&
+        echo 'Keeping container alive...' &&
+        tail -f /dev/null
+      "
+    networks:
+      - app-network
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: nginx
+    ports:
+      - "8090:80"
+      - "8443:443"
+    volumes:
+      - ./frontend/build:/usr/share/nginx/html:ro
+      - ./backend/staticfiles:/static:ro
+      - ./backend/media:/media:ro
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - app-network
+    restart: always
+
+  adminer:
+    image: adminer:4.8.1-standalone
+    container_name: adminer
+    ports:
+      - "8082:8080"
+    networks:
+      - app-network
+    depends_on:
+      - db
+    restart: always
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - app-network
+    restart: always
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:

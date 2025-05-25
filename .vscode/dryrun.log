@@ -1,0 +1,5 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/mben-sal/Desktop/CashUp'
+docker-compose -f docker-compose.yml up -d --build
+make: Leaving directory '/home/mben-sal/Desktop/CashUp'
+ 
