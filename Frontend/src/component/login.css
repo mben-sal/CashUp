@@ -1,0 +1,312 @@
+/* Updated color scheme with refined black theme */
+
+h2 {
+    color: #00d2ff; /* Vibrant cyan blue for the CashUp text */
+    background-color: transparent;
+    font-weight: 700;
+    font-size: 15rem;
+    margin: 0;
+    line-height: 1;
+    text-shadow: 0 0 10px rgba(0, 210, 255, 0.4); /* Add glow effect to CashUp text */
+}
+
+h6 {
+    color: #bdbdbd; /* Lighter gray for subtitle */
+    font-weight: normal;
+    font-size: 1.7rem;
+    margin: 0.rem 0 2rem 0;
+}
+
+h5 {
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.5); /* More visible divider text */
+    font-size: 1rem;
+}
+
+p {
+    color: #e0e0e0; /* Brighter text for labels */
+    font-size: 1.3rem;
+}
+
+.email-input, 
+.password-input {
+    color: #e0e0e0; /* Lighter text color - this ensures the text is light */
+    background-color: #121212; /* Dark input background */
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid #333; /* Darker border */
+    border-radius: 8px;
+    margin-top: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Force input text color to be light */
+input.email-input, 
+input.password-input {
+    color: #e0e0e0 !important; /* Ensure text is visible on dark background */
+}
+
+.email-input:focus,
+.password-input:focus {
+    border-color: #00aaff; /* Highlight with brighter blue */
+    outline: none;
+}
+
+.email-input::placeholder,
+.password-input::placeholder {
+    color: #666; /* Darker placeholder text */
+}
+
+.remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.remember-me {
+    color: #bdbdbd; /* Lighter text */
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.forgot-password {
+    color: #00aaff; /* Brighter blue for links */
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+    color: #40c4ff; /* Even brighter on hover */
+}
+
+.sign-in-btn {
+    width: 100%;
+    padding: 1rem;
+    background-color: #00aaff; /* Brighter blue for button */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 1rem 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.2s ease;
+}
+
+.sign-in-btn:hover {
+    background-color: #40c4ff; /* Lighter blue on hover */
+}
+
+.ft-sign-in-btn {
+    color: #e0e0e0; /* Lighter text */
+    width: 100%;
+    padding: 0.50rem;
+    background-color: #121212; /* Dark background */
+    border: 2px solid #333; /* Darker border */
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.2s ease;
+}
+
+.ft-sign-in-btn:hover {
+    background-color: #1a1a1a; /* Slightly lighter on hover */
+    border-color: #555;
+}
+
+.sign-up-prompt a {
+    color: #00aaff; /* Brighter blue for links */
+    text-decoration: none;
+}
+
+.sign-up-prompt a:hover {
+    text-decoration: underline;
+    color: #40c4ff; /* Even brighter on hover */
+}
+
+.sign-up-prompt {
+    text-align: center;
+    margin-top: 2rem;
+    color: #bdbdbd; /* Lighter text */
+}
+
+.bar {
+    border: 1px solid #333; /* Darker divider */
+    margin: 1.5rem;
+}
+
+.email-input.error,
+.password-input.error {
+    border-color: #ff1744; /* Brighter red for errors */
+    background-color: rgba(255, 23, 68, 0.1); /* Subtle red background */
+}
+
+.error-message {
+    color: #ff1744; /* Brighter red for errors */
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    font-weight: 500;
+}
+
+.error {
+    color: #ff1744; /* Brighter red for errors */
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    display: block;
+}
+
+.page {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    min-height: 100vh;
+    margin: 0 auto;
+    background-color: #1a1a1a; /* Pure black background */
+    overflow-y: auto;
+}
+
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    padding: 0 40px;
+}
+
+.image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 50%;
+    background-color: #1a1a1a; /* Pure black background */
+	
+}
+
+.image img {
+    width: 100%;
+    height: 100%;
+    object-fit: scale-down;
+    padding: 20px;
+    filter: drop-shadow(0 0 8px rgba(0, 170, 255, 0.5));
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    justify-content: center;
+    background-color: #1a1a1a; /* Pure black background */
+    min-height: 100vh;
+}
+
+.login-wrapper {
+    color: #e0e0e0; /* Lighter text */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+    max-width: 450px;
+    width: 100%;
+    margin: auto;
+}
+
+
+  @media only screen and (max-width: 1060px) {
+	.image {
+		display: none;
+	}
+  }
+
+  @media only screen and (max-width: 350px) {
+	.login {
+		display: none
+		}
+  };
+
+  @media only screen and (max-width: 768px) {
+	h2 {
+	  font-size: 2.5rem;
+	}
+	
+	h6 {
+	  font-size: 1.3rem;
+	}
+  }
+
+  .back-to-login:hover {
+	background-color: #0056b3;
+  }
+  
+  /* Ajoutez ces styles à votre login.css */
+
+.error-message {
+	background-color: white;
+	color: #c62828;
+	padding: 10px;
+	border-radius: 4px;
+	margin-bottom: 20px;
+	text-align: center;
+	width: 100%;
+  }
+  
+  .success-message {
+	background-color: white;
+	color: #2e7d32;
+	padding: 10px;
+	border-radius: 4px;
+	margin-bottom: 20px;
+	text-align: center;
+	width: 100%;
+  }
+  
+  .sign-in-btn:disabled {
+	opacity: 0.7;
+	cursor: not-allowed;
+  }
+
+  .login-container {
+	min-height: 100vh; /* Utilise la hauteur complète de la vue */
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	overflow-y: auto; /* Permet le défilement si nécessaire */
+  }
+  
+  .login-form {
+	margin: auto; /* Centre le formulaire */
+	width: 100%;
+	max-width: 400px; /* Limite la largeur sur les grands écrans */
+	padding: 20px;
+  }
+
+  form {
+	width: 100%;
+	max-width: 100%;
+  }
+
+  @media only screen and (max-width: 480px) {
+	.email-input, 
+	.password-input, 
+	.sign-in-btn,
+	.ft-sign-in-btn {
+	  padding: 0.8rem;
+	}
+	
+	h2 {
+	  font-size: 2rem;
+	}
+  }

@@ -1,94 +1,38 @@
-version: '3.8'
-
 services:
   db:
-    image: postgres:15
+    image: postgres:13
+    container_name: database
+    environment:
+      POSTGRES_USER: ft_transcendence
+      POSTGRES_PASSWORD: ft_transcendence
+      POSTGRES_DB: backend_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=epargne_db
-      - POSTGRES_USER=epargne_user
-      - POSTGRES_PASSWORD=epargne123456
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U epargne_user -d epargne_db"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-    networks:
-      - app-network
-
-  backend:
-    build: 
-      context: .
-      dockerfile: backend/Dockerfile
-    depends_on:
-      db:
-        condition: service_healthy
-    volumes:
-      - .:/app
-      - ./backend/staticfiles:/app/backend/staticfiles
-      - ./backend/media:/app/backend/media
-    environment:
-      - DB_NAME=epargne_db
-      - DB_USER=epargne_user
-      - DB_PASSWORD=epargne123456
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DJANGO_SETTINGS_MODULE=backend.settings
-    networks:
-      - app-network
     ports:
-      - "8000:8000"
-
-  redis:
-    image: redis:alpine
-    networks:
-      - app-network
-
-  frontend:
-    build: 
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: react-frontend
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    working_dir: /app
-    command: >
-      sh -c "
-        echo '=== Frontend Build Process ===' &&
-        if [ ! -d node_modules ]; then
-          echo 'Installing dependencies...' &&
-          npm install
-        fi &&
-        echo 'Building React app...' &&
-        npm run build &&
-        echo 'Build completed successfully!' &&
-        ls -la build/ &&
-        echo 'Keeping container alive...' &&
-        tail -f /dev/null
-      "
-    networks:
-      - app-network
-
-  nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    container_name: nginx
-    ports:
-      - "8090:80"
-      - "8443:443"
-    volumes:
-      - ./frontend/build:/usr/share/nginx/html:ro
-      - ./backend/staticfiles:/static:ro
-      - ./backend/media:/media:ro
-    depends_on:
-      - backend
-      - frontend
+      - "5432:5432"
     networks:
       - app-network
     restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ft_transcendence -d backend_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: always
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   adminer:
     image: adminer:4.8.1-standalone
@@ -98,21 +42,105 @@ services:
     networks:
       - app-network
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     restart: always
 
   mailhog:
     image: mailhog/mailhog:latest
     container_name: mailhog
     ports:
-      - "1025:1025"
-      - "8025:8025"
+      - "1025:1025"  # SMTP Server
+      - "8025:8025"  # Interface Web
+    networks:
+      - app-network
+    restart: always
+
+  swagger:
+    image: swaggerapi/swagger-ui:latest
+    container_name: swagger
+    ports:
+      - "8081:8080"
+    environment:
+      - SWAGGER_JSON=/app/swagger.json
+    volumes:
+      - ./Backend/swagger.json:/app/swagger.json
+    networks:
+      - app-network
+    restart: always
+
+  backend:
+    build: 
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: backend
+    volumes:
+      - ./Backend/backend:/app/backend
+      - static_volume:/app/backend/static
+      - media_volume:/app/backend/media
+    command: >
+      sh -c "
+        mkdir -p /app/backend/static &&
+        mkdir -p /app/backend/media &&
+        python manage.py makemigrations &&
+        python manage.py migrate &&
+        daphne -b 0.0.0.0 -p 8000 backend.asgi:application"
+    # ports:  # Commenté car Nginx va s'occuper de l'exposition
+    #   - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      mailhog:
+        condition: service_started
+    networks:
+      - app-network
+    restart: always
+
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    # ports:  # Commenté car Nginx va s'occuper de l'exposition
+    #   - "5173:5173"
+    networks:
+      - app-network
+    volumes: 
+      - ./Frontend:/app
+      - frontend_modules:/app/node_modules
+    restart: always
+    depends_on:
+      - backend
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/certs:/etc/nginx/certs
+      - static_volume:/static
+      - media_volume:/media
+    depends_on:
+      - backend
+      - frontend
     networks:
       - app-network
     restart: always
 
 volumes:
   postgres_data:
+  frontend_modules:
+  static_volume:
+  media_volume:
+  redis_data:
 
 networks:
   app-network:
+    driver: bridge
