@@ -133,12 +133,11 @@ L'application est entièrement responsive et optimisée pour :
 
 ## 👤 Auteur
 
-**[Ton Nom]** - Développeur Full-Stack
+**[amanr ben salah]** - Développeur Full-Stack
 
-- 🌐 Portfolio : [ton-portfolio.com](https://ton-portfolio.com)
-- 💼 LinkedIn : [linkedin.com/in/ton-profil](https://linkedin.com/in/ton-profil)
-- 📧 Email : ton-email@example.com
-- 🐙 GitHub : [@ton-username](https://github.com/ton-username)
+- 💼 LinkedIn : [linkedin.com/in/ton-profil]([https://linkedin.com/in/ton-profil](https://www.linkedin.com/in/mben-sal/))
+- 📧 Email : manarbensalah7@gmail.com
+- 🐙 GitHub : [@ton-username](https://github.com/mben-sal)
 
 ---
 
