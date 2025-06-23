@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Jun 20 20:05:15 2025
+# Make data base, printed on Mon Jun 23 21:08:44 2025
 
 # Variables
 
@@ -41,7 +41,7 @@ LSCOLORS = Gxfxcxdxbxegedabagacad
 # environment
 XDG_DATA_DIRS = /usr/local/share/:/usr/share/:/var/lib/snapd/desktop
 # environment
-OLDPWD = /home/manar/Desktop
+OLDPWD = /home/manar
 # automatic
 ^D = $(patsubst %/,%,$(dir $^))
 # automatic
@@ -56,11 +56,10 @@ XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.VAKU82
 .LOADED := 
 # default
 .INCLUDE_DIRS = /usr/local/include /usr/include /usr/include
- 
 # environment
 MEMORY_PRESSURE_WATCH = /sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/session.slice/org.gnome.Shell@wayland.service/memory.pressure
 # environment
-GNOME_TERMINAL_SERVICE = :1.308
+GNOME_TERMINAL_SERVICE = :1.594
 # makefile
 MAKEFLAGS = pqrR
 # makefile
@@ -90,7 +89,7 @@ MAKEFILE_LIST := Makefile
 # environment
 ZSH = /home/manar/.oh-my-zsh
 # environment
-VSCODE_PID = 105709
+VSCODE_PID = 317195
 # environment
 XDG_SESSION_TYPE = wayland
 # automatic
@@ -120,7 +119,7 @@ XMODIFIERS = @im=ibus
 # environment
 SHLVL = 1
 # environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/ab469fed_c0a9_4af2_ab1c_9fbf2f0c8052
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/ac74f51d_9e67_4b83_8e3f_a302f0b9170a
 # environment
 MAKELEVEL := 0
 # default
@@ -210,7 +209,6 @@ VSCODE_ESM_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
 GDMSESSION = ubuntu
 # variable set hash-table stats:
- 
 # Load=99/1024=10%, Rehash=0, Collisions=12/129=9%
 
 # Pattern-specific Variable Values
@@ -219,9 +217,9 @@ GDMSESSION = ubuntu
 
 # Directories
 
-# . (device 66309, inode 6569970): 13 files, no impossibilities.
+# . (device 66309, inode 6569970): 15 files, no impossibilities.
 
-# 13 files, no impossibilities in 1 directories.
+# 15 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -296,6 +294,7 @@ build:
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 12):
 	@docker-compose -f docker-compose.yml up -d --build
+ 
 
 .PHONY: all build down re clean fclean run
 #  Implicit rule search has not been done.
@@ -318,12 +317,12 @@ down:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 25 / storage = 204 B / avg = 8 B
-# current buf: size = 8162 B / used = 204 B / count = 25 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 27 / storage = 216 B / avg = 8 B
+# current buf: size = 8162 B / used = 216 B / count = 27 / avg = 8 B
 
-# strcache performance: lookups = 45 / hit rate = 44%
+# strcache performance: lookups = 47 / hit rate = 42%
 # hash-table stats:
-# Load=25/8192=0%, Rehash=0, Collisions=0/45=0%
-# Finished Make data base on Fri Jun 20 20:05:15 2025
+# Load=27/8192=0%, Rehash=0, Collisions=0/47=0%
+# Finished Make data base on Mon Jun 23 21:08:44 2025
 
  
