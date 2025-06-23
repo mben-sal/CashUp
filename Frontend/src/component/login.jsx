@@ -1,5 +1,4 @@
 import api from '../api/axios'; 
-import logo42 from '../assets/src/42_.svg'; 
 import './login.css';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -7,6 +6,7 @@ import logoimage from '../assets/src/image1.webp';
 import { AUTH_CONFIG } from '../config';
 import signup from '../assets/src/Logo.png';
 import { useUser } from '../contexts/UserContext';
+import GoogleLogin from '../component/GoogleLogin' // Nouveau import (ajustez le chemin selon votre structure)
 
 export default function Login() {
     const navigate = useNavigate();
@@ -45,40 +45,39 @@ export default function Login() {
         }
     };
 
-const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateForm()) return;
-    
-    setIsLoading(true);
-    try {
-        const response = await api.post('/users/login/', {
-            login_name: formData.loginName, 
-            password: formData.password
-        });
-
-        if (response.data.requires_2fa) {
-            // Rediriger vers la page 2FA avec les informations nécessaires
-            navigate('/auth/two-factor', {
-                state: {
-                    email: formData.loginName,
-                    tempToken: response.data.temp_token
-                }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!validateForm()) return;
+        
+        setIsLoading(true);
+        try {
+            const response = await api.post('/users/login/', {
+                login_name: formData.loginName, 
+                password: formData.password
             });
-        } else {
-            // Login normal sans 2FA
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('refresh_token', response.data.refresh_token);
-            setIsAuthenticated(true);
-            navigate('/');
+
+            if (response.data.requires_2fa) {
+                navigate('/auth/two-factor', {
+                    state: {
+                        email: formData.loginName,
+                        tempToken: response.data.temp_token
+                    }
+                });
+            } else {
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('refresh_token', response.data.refresh_token);
+                setIsAuthenticated(true);
+                navigate('/');
+            }
+        } catch (error) {
+            setErrors({ 
+                submit: error.response?.data?.message || 'Invalid credentials'
+            });
+        } finally {
+            setIsLoading(false);
         }
-    } catch (error) {
-        setErrors({ 
-            submit: error.response?.data?.message || 'Invalid credentials'
-        });
-    } finally {
-        setIsLoading(false);
-    }
-};
+    };
+
     const handle42Login = (type = 'signin') => {
         if (!AUTH_CONFIG.CLIENT_ID || !AUTH_CONFIG.REDIRECT_URI) {
             setErrors({ submit: 'OAuth configuration is missing.' });
@@ -98,9 +97,12 @@ const handleSubmit = async (e) => {
         window.location.href = authUrl;
     };
 
-    // Votre JSX reste exactement le même
+    const handleGoogleError = (errorMessage) => {
+        setErrors({ submit: errorMessage });
+    };
+
     return (
-	<div className="page overflow-auto"> {/* Ajout de overflow-auto */}
+	<div className="page overflow-auto">
         <div className="page">
 			<div className="image">
 				<img src={logoimage} alt="Decorative right side image" />
@@ -155,7 +157,14 @@ const handleSubmit = async (e) => {
                         {isLoading ? 'Signing in...' : 'Sign in'}
                     </button>
                     
-                    {/* <h5>OR</h5> */}
+                    <h5>OR</h5>
+                    
+                    {/* Nouveau bouton Google */}
+                    <GoogleLogin 
+                        onError={handleGoogleError}
+                        isLoading={isLoading}
+                        setIsLoading={setIsLoading}
+                    />
                     
                     {/* <button 
                         type="button" 

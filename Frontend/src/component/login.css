@@ -310,3 +310,23 @@ body {
 	  font-size: 2rem;
 	}
   }
+
+  .google-login-container {
+  width: 100%;
+  margin: 10px 0;
+}
+
+#google-signin-button {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.loading-placeholder {
+  padding: 12px;
+  text-align: center;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #666;
+}

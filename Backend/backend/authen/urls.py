@@ -31,7 +31,7 @@ from .views import (
     GameInviteView,
     GameInviteResponseView,
     CreateGameInviteView,
-    
+    GoogleLoginView,
 )
 
 urlpatterns = [
@@ -67,4 +67,5 @@ urlpatterns = [
     path('notifications/game-invite/', GameInviteView.as_view(), name='game-invite'),
     path('notifications/game-invite/<int:invite_id>/', GameInviteResponseView.as_view(), name='game_invite_response'),
     path('game/invite/', CreateGameInviteView.as_view(), name='create_game_invite'),
+	path('auth/google/login/', GoogleLoginView.as_view(), name='google_login'),
 ]

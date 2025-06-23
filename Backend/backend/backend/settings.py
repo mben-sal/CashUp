@@ -174,6 +174,8 @@ FT_TOKEN_URL = f'{FT_API_URL}/oauth/token'
 CORS_ALLOWED_ORIGINS = [
     "https://localhost",
     "https://10.32.121.74",
+    "https://accounts.google.com",
+    "https://www.googleapis.com",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -248,7 +250,8 @@ SECURE_HSTS_SECONDS = 31536000  # 1 an
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
-
+GOOGLE_OAUTH2_CLIENT_ID = os.getenv('GOOGLE_OAUTH2_CLIENT_ID', '476252811405-0vsnu3r5g4ogdj8iddduft34tardllic.apps.googleusercontent.com')
+GOOGLE_OAUTH2_CLIENT_SECRET = os.getenv('GOOGLE_OAUTH2_CLIENT_SECRET', '')
 # Configuration Email avec MailHog
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'mailhog'  # Nom du service dans docker-compose

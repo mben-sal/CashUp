@@ -1706,3 +1706,166 @@ class CreateGameInviteView(APIView):
             },
             status=status.HTTP_201_CREATED
         )
+    
+
+# Ajoutez ces imports en haut de votre views.py
+import requests
+from google.auth.transport import requests as google_requests
+from google.oauth2 import id_token
+import google.auth.exceptions
+
+class GoogleLoginView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        """
+        Authenticate user with Google OAuth token
+        """
+        try:
+            token = request.data.get('token')
+            if not token:
+                return Response({
+                    'status': 'error',
+                    'message': 'Google token is required'
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+            # Verify the Google token
+            try:
+                idinfo = id_token.verify_oauth2_token(
+                    token, 
+                    google_requests.Request(), 
+                    settings.GOOGLE_OAUTH2_CLIENT_ID
+                )
+
+                # Verify the token is for our client
+                if idinfo['aud'] != settings.GOOGLE_OAUTH2_CLIENT_ID:
+                    return Response({
+                        'status': 'error',
+                        'message': 'Invalid token audience'
+                    }, status=status.HTTP_400_BAD_REQUEST)
+
+            except google.auth.exceptions.GoogleAuthError as e:
+                return Response({
+                    'status': 'error',
+                    'message': f'Invalid Google token: {str(e)}'
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+            # Extract user information
+            email = idinfo.get('email')
+            first_name = idinfo.get('given_name', '')
+            last_name = idinfo.get('family_name', '')
+            google_id = idinfo.get('sub')
+            picture = idinfo.get('picture', '')
+            
+            # Create or get user
+            user, created = User.objects.get_or_create(
+                email=email,
+                defaults={
+                    'username': email,  # Use email as username
+                    'first_name': first_name,
+                    'last_name': last_name,
+                }
+            )
+
+            # Create or update profile
+            profile_defaults = {
+                'intra_id': email,  # Use email as intra_id for Google users
+                'display_name': f"{first_name} {last_name}".strip() or email.split('@')[0],
+                'status': 'online',
+                'two_factor_enabled': False  # Default to false for Google users
+            }
+
+            # Handle avatar from Google
+            if picture:
+                profile_defaults['avatar'] = picture
+
+            profile, created_profile = UserProfile.objects.get_or_create(
+                user=user,
+                defaults=profile_defaults
+            )
+
+            if not created_profile:
+                # Update existing profile
+                profile.status = 'online'
+                if picture and not profile.avatar.startswith('/media/'):
+                    profile.avatar = picture
+                profile.save()
+
+            # Handle 2FA if enabled
+            if profile.two_factor_enabled:
+                # Generate 2FA code
+                code = ''.join(random.choices(string.digits, k=6))
+                TwoFactorCode.objects.create(
+                    user=user,
+                    code=code,
+                    expires_at=timezone.now() + timedelta(minutes=2)
+                )
+                
+                # Send 2FA email
+                html_content = render_to_string('two_factor_email.html', {
+                    'user': user,
+                    'code': code,
+                    'expires_in': '2 minutes'
+                })
+                
+                send_mail(
+                    subject='Code de vérification',
+                    message=f'Votre code de vérification est : {code}',
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[user.email],
+                    fail_silently=False,
+                    html_message=html_content
+                )
+                
+                # Create temporary token for 2FA verification
+                temp_token = jwt.encode(
+                    {
+                        'user_id': user.id, 
+                        'exp': timezone.now() + timedelta(minutes=10)
+                    },
+                    settings.SECRET_KEY,
+                    algorithm='HS256'
+                )
+                
+                return Response({
+                    'requires_2fa': True,
+                    'temp_token': temp_token,
+                    'email': email
+                })
+            else:
+                # Normal login without 2FA
+                profile.status = 'online'
+                profile.save()
+                
+                # Create session
+                session_key = request.session.session_key
+                if not session_key:
+                    request.session.create()
+                    session_key = request.session.session_key
+                    
+                ActiveSession.objects.update_or_create(
+                    user=user,
+                    defaults={
+                        'session_key': session_key,
+                        'last_activity': timezone.now()
+                    }
+                )
+                
+                # Generate JWT tokens
+                refresh = RefreshToken.for_user(user)
+                return Response({
+                    'requires_2fa': False,
+                    'token': str(refresh.access_token),
+                    'refresh_token': str(refresh),
+                    'user': UserProfileSerializer(profile).data,
+                    'is_new_user': created
+                })
+
+        except Exception as e:
+            print(f"Google login error: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            return Response({
+                'status': 'error',
+                'message': 'An error occurred during Google login'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

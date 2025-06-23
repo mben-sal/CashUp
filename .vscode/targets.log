@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue Jun 17 13:00:58 2025
+# Make data base, printed on Fri Jun 20 20:05:15 2025
 
 # Variables
 
@@ -41,25 +41,26 @@ LSCOLORS = Gxfxcxdxbxegedabagacad
 # environment
 XDG_DATA_DIRS = /usr/local/share/:/usr/share/:/var/lib/snapd/desktop
 # environment
-OLDPWD = /home/manar
+OLDPWD = /home/manar/Desktop
 # automatic
 ^D = $(patsubst %/,%,$(dir $^))
 # automatic
 %F = $(notdir $%)
 # environment
-VSCODE_CODE_CACHE_PATH = /home/manar/.config/Code/CachedData/848b80aeb52026648a8ff9f7c45a9b0a80641e2e
+VSCODE_CODE_CACHE_PATH = /home/manar/.config/Code/CachedData/dfaf44141ea9deb3b4096f7cd6d24e00c147a4b1
 # environment
 LANG = C
 # environment
-XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.IKJA82
+XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.VAKU82
 # default
 .LOADED := 
 # default
 .INCLUDE_DIRS = /usr/local/include /usr/include /usr/include
+ 
 # environment
 MEMORY_PRESSURE_WATCH = /sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/session.slice/org.gnome.Shell@wayland.service/memory.pressure
 # environment
-GNOME_TERMINAL_SERVICE = :1.118
+GNOME_TERMINAL_SERVICE = :1.308
 # makefile
 MAKEFLAGS = pqrR
 # makefile
@@ -89,13 +90,13 @@ MAKEFILE_LIST := Makefile
 # environment
 ZSH = /home/manar/.oh-my-zsh
 # environment
-VSCODE_PID = 3983
+VSCODE_PID = 105709
 # environment
 XDG_SESSION_TYPE = wayland
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
-SESSION_MANAGER = local/manar:@/tmp/.ICE-unix/2228,unix/manar:/tmp/.ICE-unix/2228
+SESSION_MANAGER = local/manar:@/tmp/.ICE-unix/2170,unix/manar:/tmp/.ICE-unix/2170
 # automatic
 *F = $(notdir $*)
 # environment
@@ -119,7 +120,7 @@ XMODIFIERS = @im=ibus
 # environment
 SHLVL = 1
 # environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/b95e6d7d_bea9_4076_86f5_b60c9b8ce5ef
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/ab469fed_c0a9_4af2_ab1c_9fbf2f0c8052
 # environment
 MAKELEVEL := 0
 # default
@@ -157,7 +158,7 @@ LOGNAME = manar
 # makefile
 .DEFAULT_GOAL := build
 # environment
-SYSTEMD_EXEC_PID = 2263
+SYSTEMD_EXEC_PID = 2205
 # environment
 DISPLAY = :0
 # environment
@@ -209,6 +210,7 @@ VSCODE_ESM_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
 GDMSESSION = ubuntu
 # variable set hash-table stats:
+ 
 # Load=99/1024=10%, Rehash=0, Collisions=12/129=9%
 
 # Pattern-specific Variable Values
@@ -217,9 +219,9 @@ GDMSESSION = ubuntu
 
 # Directories
 
-# . (device 66309, inode 6569970): 12 files, no impossibilities.
+# . (device 66309, inode 6569970): 13 files, no impossibilities.
 
-# 12 files, no impossibilities in 1 directories.
+# 13 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -230,7 +232,7 @@ GDMSESSION = ubuntu
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2025-05-30 00:29:29.633346508
+#  Last modified 2025-06-18 15:48:25.429924877
 #  File has been updated.
 #  Successfully updated.
 
@@ -239,7 +241,7 @@ clean: down
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 15):
+#  recipe to execute (from 'Makefile', line 25):
 	@docker system prune -a
 
 re: down
@@ -247,7 +249,7 @@ re: down
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 12):
+#  recipe to execute (from 'Makefile', line 22):
 	@docker-compose -f docker-compose.yml up -d
 
 # Not a target:
@@ -269,7 +271,7 @@ fclean:
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 18):
+#  recipe to execute (from 'Makefile', line 28):
 	@echo "All data will be deleted! Are you sure (yes/no)"
 	@read ans && [ "$$ans" = "yes" ] && \
 		docker stop $$(docker ps -qa) && \
@@ -282,18 +284,17 @@ run:
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 26):
+#  recipe to execute (from 'Makefile', line 36):
 		echo "Running default services..."; \
 		docker-compose -f docker-compose.yml up --build -d; \
 
 
- 
 build:
 #  Phony target (prerequisite of .PHONY).
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 2):
+#  recipe to execute (from 'Makefile', line 12):
 	@docker-compose -f docker-compose.yml up -d --build
 
 .PHONY: all build down re clean fclean run
@@ -306,7 +307,7 @@ down:
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 7):
+#  recipe to execute (from 'Makefile', line 17):
 	@docker-compose -f docker-compose.yml down
 
 # files hash-table stats:
@@ -317,12 +318,12 @@ down:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 24 / storage = 192 B / avg = 8 B
-# current buf: size = 8162 B / used = 192 B / count = 24 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 25 / storage = 204 B / avg = 8 B
+# current buf: size = 8162 B / used = 204 B / count = 25 / avg = 8 B
 
-# strcache performance: lookups = 44 / hit rate = 45%
+# strcache performance: lookups = 45 / hit rate = 44%
 # hash-table stats:
-# Load=24/8192=0%, Rehash=0, Collisions=0/44=0%
-# Finished Make data base on Tue Jun 17 13:00:58 2025
+# Load=25/8192=0%, Rehash=0, Collisions=0/45=0%
+# Finished Make data base on Fri Jun 20 20:05:15 2025
 
  
