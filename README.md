@@ -135,9 +135,6 @@ L'application est entièrement responsive et optimisée pour :
 
 **[amanr ben salah]** - Développeur Full-Stack
 
-- 💼 LinkedIn : [linkedin.com/in/ton-profil]([https://linkedin.com/in/ton-profil](https://www.linkedin.com/in/mben-sal/))
-- 📧 Email : manarbensalah7@gmail.com
-- 🐙 GitHub : [@ton-username](https://github.com/mben-sal)
 
 ---
 
